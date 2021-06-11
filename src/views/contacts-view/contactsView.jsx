@@ -7,7 +7,7 @@ import Filter from "../../components/Filter";
 import Loader from "react-loader-spinner";
 import { getIsLoading } from "../../redux/contacts/contacts-selectors";
 import PropTypes from "prop-types";
-import { mainTitle, title } from "./contacts-view.module.css";
+import { title } from "./contacts-view.module.css";
 
 class Contacts extends Component {
   componentDidMount() {

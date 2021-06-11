@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import routs from "./router";
-import Loader from "react-loader-spinner";
+import ViewsLoader from "./components/UI/Loader";
 import { fetchCurrentUser } from "./redux/auth/auth-operations";
 import { getIsLoading } from "./redux/auth/auth-selectors";
 import AppBar from "./components/AppBar";
@@ -23,14 +23,6 @@ const Contacts = lazy(() =>
   import(/* webpackChunkName: "Contacts" */ "./views/contacts-view")
 );
 
-const loaderProps = {
-  type: "ThreeDots",
-  color: "#fc4445",
-  height: 100,
-  width: 100,
-  timeout: 2000,
-};
-
 const App = () => {
   const dispatch = useDispatch();
 
@@ -45,21 +37,11 @@ const App = () => {
       {!isLoading && <AppBar />}
 
       <div className="contentWrapper">
-        <Suspense
-          fallback={
-            <Loader
-              type="ThreeDots"
-              color="#fc4445"
-              height={100}
-              width={100}
-              timeout={3000}
-            />
-          }
-        >
+        <Suspense fallback={<ViewsLoader />}>
           <Switch>
             <Route path="/" exact component={HomeView} />
             {isLoading ? (
-              <Loader {...loaderProps} />
+              <ViewsLoader />
             ) : (
               <PublicRoute
                 path={routs.RegisterView}
@@ -70,7 +52,7 @@ const App = () => {
               />
             )}
             {isLoading ? (
-              <Loader {...loaderProps} />
+              <ViewsLoader />
             ) : (
               <PublicRoute
                 path={routs.LoginView}
