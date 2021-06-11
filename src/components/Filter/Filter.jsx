@@ -1,22 +1,26 @@
 import { connect } from "react-redux";
 import { actions } from "../../redux/contacts/contacts-actions";
+import TextField from "@material-ui/core/TextField";
+import Container from "@material-ui/core/Container";
+
 import PropTypes from "prop-types";
-import { filterWrapper, filterLabel } from "./Filter.module.css";
 
 const Filter = (props) => {
   const { value, changeFilter } = props;
   return (
-    <div className={filterWrapper}>
-      <label className={filterLabel} htmlFor="filter">
-        Find contacts by name or number
-      </label>
-      <input
-        id="filter"
+    <Container component="main" maxWidth="xs">
+      <TextField
         onInput={(e) => changeFilter(e.target.value)}
-        value={value}
+        variant="outlined"
+        margin="normal"
+        fullWidth
         type="text"
-      ></input>
-    </div>
+        id="filter"
+        label="Find contacts by name or number"
+        name="filter"
+        value={value}
+      />
+    </Container>
   );
 };
 

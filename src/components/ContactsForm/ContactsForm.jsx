@@ -1,86 +1,114 @@
-import PropTypes from "prop-types";
-import { Component } from "react";
-import { connect } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contacts/contacts-operations";
-import { form, label, input} from "./ContactsForm.module.css";
+// import { form, label, input } from "./ContactsForm.module.css";
 import { getAllContacts } from "../../redux/contacts/contacts-selectors";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Container from "@material-ui/core/Container";
+import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%",
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-class Form extends Component {
-  state = {
-    name: "",
-    number: "",
-  };
-  getContactData = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-  saveNewContact = (e, name, number) => {
-    const { contacts, addContact } = this.props;
+const ContactsForm = () => {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
+  const getContactName = (e) => setName(e.target.value);
+  const getContactNumber = (e) => setNumber(e.target.value);
+
+  const dispatch = useDispatch();
+  const contacts = useSelector(getAllContacts);
+
+  const saveNewContact = (e, name, number) => {
     e.preventDefault();
     contacts.some((item) => item.name === name)
       ? alert(`${name} is already in contacts`)
-      : addContact(name, number);
+      : dispatch(addContact(name, number));
 
     e.currentTarget.reset();
+    setName("");
+    setNumber("");
   };
 
-  static propTypes = {
-    addContact: PropTypes.func.isRequired,
-  };
+  const classes = useStyles();
 
-  render() {
-    return (
-      <form
-        className={form}
-        onSubmit={(e) =>
-          this.saveNewContact(e, this.state.name, this.state.number)
-        }
-      >
-        <label className={label}>
-          Name
-          <input
-            className={input}
-            onInput={this.getContactData}
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <ContactPhoneOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Add new contact
+        </Typography>
+        <form
+          className={classes.form}
+          onSubmit={(e) => saveNewContact(e, name, number)}
+        >
+          <TextField
+            onInput={getContactName}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             type="text"
+            id="name"
+            label="Name"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
-            required
+            title="The name can only consist of letters, apostrophes, dashes and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan, etc."
+            autoFocus
           />
-        </label>
-        <label className={label}>
-          Number
-          <input
-            className={input}
-            onInput={this.getContactData}
+          <TextField
+            onInput={getContactNumber}
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
             type="tel"
+            id="number"
+            label="Number"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Номер телефона должен состоять из цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
-            required
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           />
-        </label>
-        <Button
+          <Button
+            fullWidth
             type="submit"
             variant="contained"
             color="secondary"
-          >Add contact</Button>
-        {/* <button className={button} type="submit">
-          Add contact
-        </button> */}
-      </form>
-    );
-  }
-}
+            className={classes.submit}
+          >
+            Add contact
+          </Button>
+        </form>
+      </div>
+    </Container>
+  );
+};
 
-const mapStateToProps = (state) => ({
-  contacts: getAllContacts(state),
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  addContact: (name, number) => dispatch(addContact(name, number)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default ContactsForm;

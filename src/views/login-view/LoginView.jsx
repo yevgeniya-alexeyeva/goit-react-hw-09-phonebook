@@ -1,6 +1,5 @@
 import { useState } from "react";
-// import { connect } from "react-redux";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -9,10 +8,16 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputLabel from "@material-ui/core/InputLabel";
+import FormControl from "@material-ui/core/FormControl";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { loginUser } from "../../redux/auth/auth-operations";
-// import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -26,17 +31,24 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  margin: {
+    margin: theme.spacing(1),
+  },
+  textField: {
+    width: "25ch",
+  },
 }));
 
-const  LoginView = () => {
+const LoginView = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
   const updateEmail = (e) => setEmail(e.target.value);
@@ -48,9 +60,16 @@ const  LoginView = () => {
       email: email,
       password: password,
     };
-    dispatch(loginUser(userData))
-    // onSubmit(userData);
+    dispatch(loginUser(userData));
     e.currentTarget.reset();
+  };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
   };
 
   const classes = useStyles();
@@ -65,11 +84,7 @@ const  LoginView = () => {
         <Typography component="h1" variant="h5">
           Log in
         </Typography>
-        <form
-          onSubmit={(e) => loginHandle(e)}
-          className={classes.form}
-          noValidate
-        >
+        <form onSubmit={(e) => loginHandle(e)} className={classes.form}>
           <TextField
             onInput={updateEmail}
             variant="outlined"
@@ -83,18 +98,33 @@ const  LoginView = () => {
             autoComplete="email"
             autoFocus
           />
-          <TextField
-            onInput={updatePassword}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
+
+          <FormControl className={classes.form} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={updatePassword}
+              title="Password must be seven characters long"
+              required
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={70}
+            />
+          </FormControl>
           <Button
             type="submit"
             fullWidth
@@ -117,13 +147,4 @@ const  LoginView = () => {
   );
 };
 
-// LoginView.propTypes = {
-//   onSubmit: PropTypes.func.isRequired,
-// };
-
-// const mapDispatchToProps = {
-//   onSubmit: login,
-// };
-
 export default LoginView;
-// export default connect(null, mapDispatchToProps)(LoginView);

@@ -3,7 +3,7 @@ import { removeContact } from "../../redux/contacts/contacts-operations";
 import PropTypes from "prop-types";
 import { contactItem, contactItemName } from "./Contact.module.css";
 import Button from "@material-ui/core/Button";
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 const Contact = (props) => {
   const { item, onDelete } = props;
@@ -13,11 +13,15 @@ const Contact = (props) => {
         {item.name}: {item.number}
       </span>
       <Button
-            type="button"
-            onClick={() => onDelete(item.id)}
-            variant="contained"
-            color="secondary"
-          ><DeleteOutlineIcon/>Delete</Button>
+        type="button"
+        onClick={() => onDelete(item.id)}
+        variant="contained"
+        color="secondary"
+        size="small"
+        endIcon={<DeleteOutlineIcon />}
+      >
+        Delete
+      </Button>
     </li>
   );
 };

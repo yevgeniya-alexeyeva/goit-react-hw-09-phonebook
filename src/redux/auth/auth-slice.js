@@ -63,6 +63,7 @@ const authSlice = createSlice({
       state.user = { name: null, email: null };
       state.token = null;
       state.isAuthenticated = false;
+      state.loading = false;
     },
     [logoutUser.pending]: (state) => {
       state.loading = true;

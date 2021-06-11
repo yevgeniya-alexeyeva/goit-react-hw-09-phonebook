@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Switch } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
-import { useDispatch, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import routs from "./router";
 import Loader from "react-loader-spinner";
 import { fetchCurrentUser } from "./redux/auth/auth-operations";
@@ -38,12 +38,11 @@ const App = () => {
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
-  const { getState } = useStore();
-  const isLoading = getIsLoading(getState());
+  const isLoading = useSelector(getIsLoading);
 
   return (
     <div className="App">
-      {isLoading ? <Loader {...loaderProps} /> : <AppBar />}
+      {!isLoading && <AppBar />}
 
       <div className="contentWrapper">
         <Suspense
