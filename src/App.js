@@ -25,27 +25,27 @@ const Contacts = lazy(() =>
 
 const loaderProps = {
   type: "ThreeDots",
- color: "#fc4445",
-              height: 100,
-              width: 100,
-              timeout: 2000,
-}
+  color: "#fc4445",
+  height: 100,
+  width: 100,
+  timeout: 2000,
+};
 
 const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-   dispatch(fetchCurrentUser())
-  
-  }, [dispatch])
- 
-  const {getState} = useStore();
-const isLoading = getIsLoading(getState())
+    dispatch(fetchCurrentUser());
+  }, [dispatch]);
 
-    return (
-      <div className="App">
-        <AppBar />
-        <div className="contentWrapper">
+  const { getState } = useStore();
+  const isLoading = getIsLoading(getState());
+
+  return (
+    <div className="App">
+      {isLoading ? <Loader {...loaderProps} /> : <AppBar />}
+
+      <div className="contentWrapper">
         <Suspense
           fallback={
             <Loader
@@ -60,7 +60,7 @@ const isLoading = getIsLoading(getState())
           <Switch>
             <Route path="/" exact component={HomeView} />
             {isLoading ? (
-              <Loader {...loaderProps}/>
+              <Loader {...loaderProps} />
             ) : (
               <PublicRoute
                 path={routs.RegisterView}
@@ -71,7 +71,7 @@ const isLoading = getIsLoading(getState())
               />
             )}
             {isLoading ? (
-              <Loader {...loaderProps}/>
+              <Loader {...loaderProps} />
             ) : (
               <PublicRoute
                 path={routs.LoginView}
@@ -88,10 +88,9 @@ const isLoading = getIsLoading(getState())
             />
           </Switch>
         </Suspense>
-        </div>
       </div>
-    );
-  }
-
+    </div>
+  );
+};
 
 export default App;
