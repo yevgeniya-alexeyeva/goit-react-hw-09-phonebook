@@ -5,7 +5,6 @@ import { getIsAuthenticated } from "../redux/auth/auth-selectors";
 const PrivateRoute = ({ component: Component, redirectTo, ...routeProps }) => {
   const isAuthenticated = useSelector(getIsAuthenticated);
 
-  console.log("isAuthenticated in privet rout", isAuthenticated);
   return (
     <Route
       {...routeProps}

@@ -1,12 +1,12 @@
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { removeContact } from "../../redux/contacts/contacts-operations";
 import PropTypes from "prop-types";
 import { contactItem, contactItemName } from "./Contact.module.css";
 import Button from "@material-ui/core/Button";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
-const Contact = (props) => {
-  const { item, onDelete } = props;
+const Contact = ({ item }) => {
+  const dispatch = useDispatch();
   return (
     <li className={contactItem}>
       <span className={contactItemName}>
@@ -14,7 +14,7 @@ const Contact = (props) => {
       </span>
       <Button
         type="button"
-        onClick={() => onDelete(item.id)}
+        onClick={() => dispatch(removeContact(item.id))}
         variant="contained"
         color="secondary"
         size="small"
@@ -28,11 +28,6 @@ const Contact = (props) => {
 
 Contact.propTypes = {
   item: PropTypes.object.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onDelete: (contactId) => dispatch(removeContact(contactId)),
-});
-
-export default connect(null, mapDispatchToProps)(Contact);
+export default Contact;
