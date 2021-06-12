@@ -82,7 +82,6 @@ const LoginView = () => {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={updatePassword}
-              title="Password must be seven characters long"
               required
               endAdornment={
                 <InputAdornment position="end">
