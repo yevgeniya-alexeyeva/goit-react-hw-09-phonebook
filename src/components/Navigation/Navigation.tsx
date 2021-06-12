@@ -3,11 +3,10 @@ import styles from "./Navigation.module.css";
 import { useStore } from "react-redux";
 import { getIsAuthenticated } from "../../redux/auth/auth-selectors";
 
-
 const Navigation = () => {
-  const {getState} = useStore();
-  const isAuthenticated = getIsAuthenticated(getState());
-  
+  const { getState } = useStore();
+  const isAuthenticated: boolean = getIsAuthenticated(getState());
+
   return (
     <nav>
       <NavLink
@@ -33,13 +32,4 @@ const Navigation = () => {
   );
 };
 
-// Navigation.propTypes = {
-//   isAuthenticated: PropTypes.bool.isRequired,
-// };
-
-// const MSTP = (state) => ({
-//   isAuthenticated: isAuthenticated(state),
-// });
-
-// export default connect(MSTP)(Navigation);
 export default Navigation;

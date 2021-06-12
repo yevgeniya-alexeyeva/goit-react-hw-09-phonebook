@@ -6,20 +6,14 @@ import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 import "./index.css";
 import App from "./App";
-import Loader from "react-loader-spinner";
+import Loader from './components/UI/Loader/index';
 
-const loaderProps = {
-  type: "ThreeDots",
- color: "#fc4445",
-              height: 500,
-              width: 500,
-              timeout: 3000,
-}
+
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={<Loader {...loaderProps}/>} persistor={persistor}>
+      <PersistGate loading={<Loader/>} persistor={persistor}>
         <BrowserRouter>
           <App />
         </BrowserRouter>

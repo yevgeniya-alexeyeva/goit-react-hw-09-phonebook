@@ -2,19 +2,16 @@ import axios from "axios";
 
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
-
 export const fetchContacts = () => {
   return axios.get("/contacts").then((response) => response.data);
 };
 
-export const addContact = (contact) => {
+export const addContact = (contact: {}) => {
   return axios.post("/contacts", contact).then(({ data }) => {
     return data;
   });
 };
 
-export const deleteContact = (contactId) => {
+export const deleteContact = (contactId: string) => {
   return axios.delete(`/contacts/${contactId}`);
 };
-
-
