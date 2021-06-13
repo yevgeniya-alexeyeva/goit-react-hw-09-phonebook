@@ -10,6 +10,13 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Container from "@material-ui/core/Container";
 import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import useStyles from "../useStyles";
+import { info, defaultModules } from "@pnotify/core";
+import "@pnotify/core/dist/PNotify.css";
+import * as PNotifyMobile from "@pnotify/mobile";
+import "@pnotify/mobile/dist/PNotifyMobile.css";
+import "@pnotify/core/dist/BrightTheme.css";
+
+defaultModules.set(PNotifyMobile, {});
 
 const ContactsForm = () => {
   const [contactData, setContactData] = useState({ name: "", number: "" });
@@ -24,7 +31,10 @@ const ContactsForm = () => {
     const { name, number } = contactData;
     e.preventDefault();
     contacts.some((item) => item.name === name)
-      ? alert(`${name} is already in contacts`)
+      ? info({
+          text: `${name} is already in contacts`,
+          delay: 2000,
+        })
       : dispatch(addContact(name, number));
 
     e.currentTarget.reset();
