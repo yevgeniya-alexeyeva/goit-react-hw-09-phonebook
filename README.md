@@ -2,9 +2,9 @@
 
 ### I used:
 
--reduxjs
--redux-persist
--react-router
--axios
--material-ui
--prop-types
+- reduxjs
+- redux-persist
+- react-router
+- axios
+- material-ui
+- prop-types
