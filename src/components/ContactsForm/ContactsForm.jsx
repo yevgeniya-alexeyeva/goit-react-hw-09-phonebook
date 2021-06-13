@@ -12,24 +12,24 @@ import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import useStyles from "../useStyles";
 
 const ContactsForm = () => {
-  const [name, setName] = useState("");
-  const [number, setNumber] = useState("");
+  const [contactData, setContactData] = useState({ name: "", number: "" });
 
-  const getContactName = (e) => setName(e.target.value);
-  const getContactNumber = (e) => setNumber(e.target.value);
+  const getContactData = (e) =>
+    setContactData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const dispatch = useDispatch();
   const contacts = useSelector(getAllContacts);
 
-  const saveNewContact = (e, name, number) => {
+  const saveNewContact = (e) => {
+    const { name, number } = contactData;
     e.preventDefault();
     contacts.some((item) => item.name === name)
       ? alert(`${name} is already in contacts`)
       : dispatch(addContact(name, number));
 
     e.currentTarget.reset();
-    setName("");
-    setNumber("");
+
+    setContactData({ name: "", number: "" });
   };
 
   const classes = useStyles();
@@ -44,12 +44,9 @@ const ContactsForm = () => {
         <Typography component="h1" variant="h5">
           Add new contact
         </Typography>
-        <form
-          className={classes.form}
-          onSubmit={(e) => saveNewContact(e, name, number)}
-        >
+        <form className={classes.form} onSubmit={saveNewContact}>
           <TextField
-            onInput={getContactName}
+            onInput={getContactData}
             variant="outlined"
             margin="normal"
             required
@@ -63,7 +60,7 @@ const ContactsForm = () => {
             autoFocus
           />
           <TextField
-            onInput={getContactNumber}
+            onInput={getContactData}
             variant="outlined"
             margin="normal"
             required

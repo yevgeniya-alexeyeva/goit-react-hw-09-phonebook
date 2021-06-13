@@ -20,21 +20,19 @@ import { loginUser } from "../../redux/auth/auth-operations";
 import useStyles from "../../components/useStyles";
 
 const LoginView = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const updateEmail = (e) => setEmail(e.target.value);
-  const updatePassword = (e) => setPassword(e.target.value);
+
+  const updateUserData = (e) =>
+    setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const loginHandle = (e) => {
     e.preventDefault();
-    const userData = {
-      email: email,
-      password: password,
-    };
+
     dispatch(loginUser(userData));
+
     e.currentTarget.reset();
   };
 
@@ -60,7 +58,7 @@ const LoginView = () => {
         </Typography>
         <form onSubmit={(e) => loginHandle(e)} className={classes.form}>
           <TextField
-            onInput={updateEmail}
+            onInput={updateUserData}
             variant="outlined"
             margin="normal"
             required
@@ -80,8 +78,9 @@ const LoginView = () => {
             <OutlinedInput
               id="outlined-adornment-password"
               type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={updatePassword}
+              value={userData.password}
+              name="password"
+              onChange={updateUserData}
               required
               endAdornment={
                 <InputAdornment position="end">

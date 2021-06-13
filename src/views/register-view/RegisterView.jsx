@@ -20,24 +20,21 @@ import { createUser } from "../../redux/auth/auth-operations";
 import useStyles from "../../components/useStyles";
 
 const RegisterView = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
   const [showPassword, setShowPassword] = useState(false);
 
-  const updateName = (e) => setName(e.target.value);
-  const updateEmail = (e) => setEmail(e.target.value);
-  const updatePassword = (e) => setPassword(e.target.value);
+  const updateUserData = (e) =>
+    setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const dispatch = useDispatch();
 
   const registerHandle = (e) => {
     e.preventDefault();
-    const userData = {
-      name: name,
-      email: email,
-      password: password,
-    };
 
     dispatch(createUser(userData));
 
@@ -68,9 +65,9 @@ const RegisterView = () => {
           <Grid container spacing={2}>
             <TextField
               className={classes.form}
-              onInput={updateName}
+              onInput={updateUserData}
               autoComplete="name"
-              name="Name"
+              name="name"
               variant="outlined"
               required
               fullWidth
@@ -81,7 +78,7 @@ const RegisterView = () => {
 
             <TextField
               className={classes.form}
-              onInput={updateEmail}
+              onInput={updateUserData}
               variant="outlined"
               required
               fullWidth
@@ -99,10 +96,11 @@ const RegisterView = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={updatePassword}
+                value={userData.password}
+                onChange={updateUserData}
                 title="Password must be at least 8 characters long"
                 required
+                name="password"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
