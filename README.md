@@ -1,4 +1,4 @@
-# My first react small application for saving private phone contacts with user registration.
+# My first react application for saving private phone contacts with user registration.
 
 ### I used:
 
